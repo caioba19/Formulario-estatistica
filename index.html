@@ -42,3 +42,236 @@
   <script src="script.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulário — Lixo Eletrônico nas Escolas</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green-100: #E1F5EE; --green-600: #1D9E75; --green-700: #0F6E56;
+      --text-primary: #1a1a1a; --text-secondary: #666; --text-hint: #999;
+      --bg-page: #f5f5f0; --bg-card: #ffffff; --bg-hover: #f9f9f7;
+      --border: #e0e0d8; --border-hover: #c0c0b8;
+      --radius-md: 8px; --radius-lg: 14px;
+    }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-page); color: var(--text-primary); min-height: 100vh; padding: 2rem 1rem 4rem; }
+    .form-wrap { max-width: 680px; margin: 0 auto; }
+    .form-header { margin-bottom: 2rem; }
+    .form-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--green-700); background: var(--green-100); border-radius: 20px; padding: 5px 12px; margin-bottom: 14px; }
+    .form-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .form-subtitle { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+    .ods-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .ods-tag { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-secondary); background: var(--bg-card); }
+    .progress-bar-wrap { margin-bottom: 1.75rem; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500; }
+    .progress-track { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--green-600); border-radius: 3px; transition: width 0.4s ease; }
+    .section-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 1rem; }
+    .section-label { font-size: 11px; font-weight: 700; color: var(--green-600); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+    .section-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .section-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .q-block { padding-top: 1.25rem; margin-top: 1.25rem; border-top: 1px solid var(--border); }
+    .q-num { font-size: 11px; font-weight: 700; color: var(--text-hint); margin-bottom: 4px; }
+    .q-label { font-size: 14.5px; font-weight: 600; margin-bottom: 4px; line-height: 1.5; }
+    .q-ods { font-size: 11px; color: var(--green-600); font-weight: 600; margin-bottom: 10px; }
+    .q-hint { font-size: 12px; color: var(--text-hint); margin-bottom: 10px; }
+    .options { display: flex; flex-direction: column; gap: 7px; }
+    .opt-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: background 0.15s, border-color 0.15s; user-select: none; }
+    .opt-row:hover { background: var(--bg-hover); border-color: var(--border-hover); }
+    .opt-row.selected { border-color: var(--green-600); background: var(--green-100); }
+    .opt-row input { margin-top: 2px; accent-color: var(--green-600); flex-shrink: 0; width: 15px; height: 15px; }
+    .opt-text { font-size: 13.5px; line-height: 1.4; }
+    .likert-wrap { display: flex; gap: 7px; }
+    .likert-btn { flex: 1; padding: 11px 4px; text-align: center; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; font-size: 14px; font-weight: 600; color: var(--text-secondary); background: var(--bg-card); transition: all 0.15s; }
+    .likert-btn:hover { border-color: var(--green-600); color: var(--green-600); }
+    .likert-btn.selected { background: var(--green-600); border-color: var(--green-600); color: #fff; }
+    .likert-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-hint); margin-top: 6px; }
+    .nav-row { display: flex; align-items: center; gap: 8px; margin-top: 1.75rem; }
+    .btn-nav { padding: 11px 20px; border-radius: var(--radius-md); font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-primary); transition: all 0.15s; }
+    .btn-nav:hover { background: var(--bg-hover); border-color: var(--border-hover); }
+    .btn-next { background: var(--green-600); border-color: var(--green-600); color: #fff; flex: 1; }
+    .btn-next:hover { background: var(--green-700); border-color: var(--green-700); }
+    .btn-next:disabled { opacity: 0.6; cursor: not-allowed; }
+    .step-counter { font-size: 12px; color: var(--text-hint); font-weight: 500; white-space: nowrap; }
+    .alert { padding: 10px 14px; border-radius: var(--radius-md); font-size: 13px; margin-top: 10px; }
+    .alert-sending { background: var(--green-100); border: 1px solid #9FE1CB; color: var(--green-700); }
+    .alert-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .success-screen { text-align: center; padding: 3rem 1rem; }
+    .success-icon { width: 56px; height: 56px; background: var(--green-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; font-size: 24px; color: var(--green-700); font-weight: 700; }
+    .success-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .success-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.7; max-width: 400px; margin: 0 auto; }
+    @media (max-width: 520px) { body { padding: 1rem 0.75rem 3rem; } .section-card { padding: 1.25rem; } .form-title { font-size: 19px; } .likert-btn { padding: 10px 2px; font-size: 13px; } }
+  </style>
+</head>
+<body>
+<div class="form-wrap">
+  <div class="form-header">
+    <div class="form-badge">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 6l2 2L8.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Pesquisa Acadêmica — ADS / Centro Universitário Jorge Amado
+    </div>
+    <div class="form-title">Lixo Eletrônico nas Escolas e Sustentabilidade</div>
+    <div class="form-subtitle">Formulário de pesquisa estatística sobre consciência e práticas de descarte de e-waste no ambiente escolar. Suas respostas são anônimas e serão utilizadas exclusivamente para fins acadêmicos.</div>
+    <div class="ods-tags">
+      <span class="ods-tag">ODS 4 — Educação de Qualidade</span>
+      <span class="ods-tag">ODS 12 — Consumo Responsável</span>
+      <span class="ods-tag">ODS 13 — Ação Climática</span>
+    </div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-meta"><span id="step-label">Seção 1 de 4</span><span id="pct-label">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+  </div>
+  <div id="form-body"></div>
+</div>
+
+<script>
+  // ──────────────────────────────────────────────────────────────
+  // PASSO FINAL: cole aqui a URL do seu Apps Script após o deploy
+  // ──────────────────────────────────────────────────────────────
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_cZws_THyG8q6C1NN567WyQt02d-GOIje7sHo9Sf0lA5RgBIbRGyjqbySwqWpICg0XA/exec";
+
+  const steps = [
+    { label:"Seção 1", title:"Perfil do Respondente", desc:"Informe seus dados básicos. Essas informações permitem cruzar os resultados estatísticos por perfil de respondente.",
+      questions:[
+        {id:"q1",text:"Qual é o seu vínculo com a instituição de ensino?",type:"radio",options:["Estudante do Ensino Médio","Estudante do Ensino Superior","Professor(a)","Funcionário(a) técnico-administrativo","Gestor(a) / Direção"]},
+        {id:"q2",text:"Qual é a sua faixa etária?",type:"radio",options:["Até 17 anos","18 a 24 anos","25 a 34 anos","35 a 44 anos","45 anos ou mais"]},
+        {id:"q3",text:"Como você se identifica?",type:"radio",options:["Feminino","Masculino","Não-binário","Prefiro não informar"]},
+        {id:"q4",text:"Em qual turno você frequenta a instituição?",type:"radio",options:["Manhã","Tarde","Noite","Integral"]}
+      ]},
+    { label:"Seção 2", title:"Consciência sobre Lixo Eletrônico", desc:"Perguntas sobre o conhecimento do respondente a respeito do e-waste. Relacionadas à ODS 4 (Educação de Qualidade).",
+      questions:[
+        {id:"q5",ods:"ODS 4 — Educação de Qualidade",text:"Você sabe o que é lixo eletrônico (e-waste)?",type:"radio",options:["Sim, conheço bem o tema","Ouvi falar, mas sei pouco","Não, nunca ouvi falar"]},
+        {id:"q6",ods:"ODS 4 — Educação de Qualidade",text:"Quais dos itens abaixo você considera lixo eletrônico?",hint:"Pode marcar mais de uma opção.",type:"checkbox",options:["Celular antigo ou quebrado","Pilhas e baterias usadas","Cabos e carregadores velhos","Teclados, mouses e periféricos","Eletrodomésticos pequenos (ferro, liquidificador)","Lâmpadas LED ou fluorescentes"]},
+        {id:"q7",ods:"ODS 13 — Ação Climática",text:"Você sabia que o descarte incorreto de eletrônicos pode contaminar o solo e a água e prejudicar a saúde humana?",type:"radio",options:["Sim, sabia","Tinha uma ideia, mas não sabia os detalhes","Não, não sabia"]},
+        {id:"q8",ods:"ODS 12 — Consumo Responsável",text:"Quantos aparelhos eletrônicos em desuso (parados, quebrados ou obsoletos) você acredita ter em casa?",type:"radio",options:["Nenhum","1 a 2 aparelhos","3 a 5 aparelhos","Mais de 5 aparelhos"]},
+        {id:"q9",ods:"ODS 12 — Consumo Responsável",text:"Você conhece algum ponto de coleta de lixo eletrônico próximo à sua escola ou residência?",type:"radio",options:["Sim, conheço e já utilizei","Sim, conheço mas nunca utilizei","Não conheço nenhum"]}
+      ]},
+    { label:"Seção 3", title:"Comportamento de Descarte", desc:"Questões sobre o que o respondente faz na prática com seus eletrônicos. Relacionadas à ODS 12 (Consumo e Produção Responsáveis).",
+      questions:[
+        {id:"q10",ods:"ODS 12 — Consumo Responsável",text:"O que você costuma fazer com eletrônicos quebrados ou sem uso?",type:"radio",options:["Jogo no lixo comum","Guardo em casa sem destino","Doo ou vendo","Levo a um ponto de coleta específico","Entrego a uma loja ou fabricante"]},
+        {id:"q11",ods:"ODS 4 / ODS 12",text:"Sua escola possui algum programa, campanha ou ponto de coleta de lixo eletrônico?",type:"radio",options:["Sim, e funciona bem","Sim, mas não funciona direito","Não possui","Não sei informar"]},
+        {id:"q12",ods:"ODS 4 — Educação de Qualidade",text:"Você já participou de alguma ação coletiva de descarte correto de eletrônicos (mutirão, campanha, drive de coleta)?",type:"radio",options:["Sim, já participei","Nunca, mas gostaria de participar","Nunca, e não tenho interesse"]},
+        {id:"q13",ods:"ODS 12 — Consumo Responsável",text:"O que mais te impede de descartar corretamente o lixo eletrônico?",hint:"Pode marcar mais de uma opção.",type:"checkbox",options:["Não sei onde levar","É longe ou inconveniente","Não sei que precisa de descarte especial","Falta de tempo","Não me parece importante","Não tenho eletrônicos para descartar"]},
+        {id:"q14",ods:"ODS 12 — Consumo Responsável",text:"Com que frequência você ou sua família adquire um novo aparelho eletrônico (celular, notebook, etc.)?",type:"radio",options:["Mais de uma vez por ano","Uma vez por ano","A cada 2 a 3 anos","Raramente (4 anos ou mais)"]}
+      ]},
+    { label:"Seção 4", title:"Escola, ODS e Ação Coletiva", desc:"Percepções sobre o papel da escola na educação ambiental e engajamento com os Objetivos de Desenvolvimento Sustentável.",
+      questions:[
+        {id:"q15",ods:"ODS 4 — Educação de Qualidade",text:"A sua escola aborda temas de sustentabilidade ambiental nas aulas ou em atividades extracurriculares?",type:"radio",options:["Sim, frequentemente","Sim, mas raramente","Não aborda","Não sei dizer"]},
+        {id:"q16",ods:"ODS 4 — Educação de Qualidade",text:"Você já ouviu falar nos ODS — Objetivos de Desenvolvimento Sustentável da ONU?",type:"radio",options:["Sim, conheço bem","Sim, já ouvi falar mas sei pouco","Não, nunca ouvi falar"]},
+        {id:"q17",ods:"ODS 4 — Educação de Qualidade",text:"O quanto você concorda com a afirmação: \"A escola tem responsabilidade ativa de educar sobre o descarte correto de lixo eletrônico\"?",type:"likert",labels:["Discordo totalmente","Concordo totalmente"]},
+        {id:"q18",ods:"ODS 12 — Consumo Responsável",text:"Você acredita que um programa de pontos de coleta de e-waste dentro da escola incentivaria a participação dos estudantes?",type:"radio",options:["Sim, definitivamente","Sim, provavelmente","Talvez","Não acredito","Não tenho opinião"]},
+        {id:"q19",ods:"ODS 4 / ODS 12",text:"Quais ações você gostaria que a escola adotasse em relação ao lixo eletrônico?",hint:"Pode marcar mais de uma opção.",type:"checkbox",options:["Ponto de coleta permanente na escola","Campanhas de conscientização nas aulas","Parcerias com empresas de reciclagem","Atividades práticas de desmontagem e reaproveitamento","Integração com o conteúdo programático das disciplinas","Nenhuma — não acho necessário"]},
+        {id:"q20",ods:"ODS 13 — Ação Climática",text:"De forma geral, como você avalia o nível de atenção da sua escola com questões ambientais?",type:"likert",labels:["Muito ruim","Excelente"]}
+      ]}
+  ];
+
+  let current = 0;
+  const answers = {};
+
+  function totalUpTo(s) { let c=0; for(let i=0;i<s;i++) c+=steps[i].questions.length; return c; }
+
+  function updateProgress() {
+    const pct = Math.round((current/steps.length)*100);
+    document.getElementById('prog').style.width = pct+'%';
+    document.getElementById('pct-label').textContent = pct+'%';
+    document.getElementById('step-label').textContent = `Seção ${current+1} de ${steps.length}`;
+  }
+
+  function renderQuestion(q, idx) {
+    const num = totalUpTo(current)+idx+1;
+    let h = `<div class="q-block"><div class="q-num">Pergunta ${num} de 20</div><div class="q-label">${q.text}</div>`;
+    if(q.ods) h += `<div class="q-ods">${q.ods}</div>`;
+    if(q.hint) h += `<div class="q-hint">${q.hint}</div>`;
+    if(q.type==='radio') {
+      h += `<div class="options">`;
+      q.options.forEach(opt => {
+        const sel = answers[q.id]===opt?'selected':'';
+        h += `<label class="opt-row ${sel}"><input type="radio" name="${q.id}" value="${opt}" ${answers[q.id]===opt?'checked':''} onchange="selectOpt('${q.id}',this)"><span class="opt-text">${opt}</span></label>`;
+      });
+      h += `</div>`;
+    } else if(q.type==='checkbox') {
+      if(!answers[q.id]) answers[q.id]=[];
+      h += `<div class="options">`;
+      q.options.forEach(opt => {
+        const chk = answers[q.id].includes(opt);
+        h += `<label class="opt-row ${chk?'selected':''}"><input type="checkbox" name="${q.id}" value="${opt}" ${chk?'checked':''} onchange="toggleCheck('${q.id}',this)"><span class="opt-text">${opt}</span></label>`;
+      });
+      h += `</div>`;
+    } else if(q.type==='likert') {
+      const val = answers[q.id]||null;
+      h += `<div class="likert-wrap">`;
+      for(let i=1;i<=5;i++) h += `<div class="likert-btn ${val==i?'selected':''}" onclick="selectLikert('${q.id}',${i},this)">${i}</div>`;
+      h += `</div><div class="likert-labels"><span>${q.labels[0]}</span><span>${q.labels[1]}</span></div>`;
+    }
+    return h + `</div>`;
+  }
+
+  function selectOpt(qid, input) {
+    answers[qid] = input.value;
+    input.closest('.options').querySelectorAll('.opt-row').forEach(r=>r.classList.remove('selected'));
+    input.closest('.opt-row').classList.add('selected');
+  }
+
+  function toggleCheck(qid, input) {
+    if(!answers[qid]) answers[qid]=[];
+    const val = input.value;
+    if(input.checked) { if(!answers[qid].includes(val)) answers[qid].push(val); input.closest('.opt-row').classList.add('selected'); }
+    else { answers[qid]=answers[qid].filter(v=>v!==val); input.closest('.opt-row').classList.remove('selected'); }
+  }
+
+  function selectLikert(qid, val, el) {
+    answers[qid]=val;
+    el.closest('.likert-wrap').querySelectorAll('.likert-btn').forEach(b=>b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function render() {
+    const s = steps[current];
+    let h = `<div class="section-card"><div class="section-label">${s.label}</div><div class="section-title">${s.title}</div><div class="section-desc">${s.desc}</div>`;
+    s.questions.forEach((q,i) => { h += renderQuestion(q,i); });
+    h += `</div><div id="alert-box"></div><div class="nav-row">`;
+    if(current>0) h += `<button class="btn-nav" onclick="goBack()">← Voltar</button>`;
+    if(current<steps.length-1) h += `<button class="btn-nav btn-next" id="btn-main" onclick="goNext()">Próxima seção →</button>`;
+    else h += `<button class="btn-nav btn-next" id="btn-main" onclick="submit()">Enviar respostas</button>`;
+    h += `<span class="step-counter">${current+1} / ${steps.length}</span></div>`;
+    document.getElementById('form-body').innerHTML = h;
+    updateProgress();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function goNext() { if(current<steps.length-1){current++;render();} }
+  function goBack() { if(current>0){current--;render();} }
+
+  async function submit() {
+    const btn = document.getElementById('btn-main');
+    const box = document.getElementById('alert-box');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    box.innerHTML = `<div class="alert alert-sending">Enviando suas respostas para a planilha...</div>`;
+    try {
+      await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(answers) });
+      document.getElementById('form-body').innerHTML = `<div class="section-card"><div class="success-screen"><div class="success-icon">✓</div><div class="success-title">Respostas enviadas com sucesso!</div><div class="success-sub">Obrigado por participar desta pesquisa. Suas respostas foram registradas na planilha e contribuem para a análise estatística sobre e-waste e sustentabilidade em ambientes escolares, em alinhamento com as ODS 4, 12 e 13 da Agenda 2030 da ONU.</div></div></div>`;
+      document.getElementById('prog').style.width='100%';
+      document.getElementById('pct-label').textContent='100%';
+      document.getElementById('step-label').textContent='Concluído';
+      window.scrollTo({top:0,behavior:'smooth'});
+    } catch(err) {
+      box.innerHTML = `<div class="alert alert-error">Erro ao enviar. Verifique a URL do Apps Script e tente novamente.</div>`;
+      btn.disabled=false; btn.textContent='Enviar respostas';
+    }
+  }
+
+  render();
+</script>
+</body>
+</html>
