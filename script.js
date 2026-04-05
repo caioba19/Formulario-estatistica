@@ -1,4 +1,3 @@
-  <script>
     const steps = [
       {
         label: "Seção 1",
@@ -281,4 +280,3 @@
     }
 
     render();
-  </script>
