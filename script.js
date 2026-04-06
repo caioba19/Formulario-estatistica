@@ -2,7 +2,7 @@
 // COLE AQUI A URL DO SEU APPS SCRIPT APÓS O DEPLOY
 // Exemplo: https://script.google.com/macros/s/XXXXXXX/exec
 // ──────────────────────────────────────────────────────────────
-const APPS_SCRIPT_URL = "COLE_SUA_URL_AQUI";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwH5baqQaECgLUowr3LN5sCSxZkR1IYprVw06tUhCtaLbFSALtSo_MiCVCKRhEe7XFy/exec";
 
 // ──────────────────────────────────────────────────────────────
 // PERGUNTAS DO FORMULÁRIO
